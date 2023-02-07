@@ -1,7 +1,7 @@
 //кнопка выхода
 const logoutButton = new LogoutButton();
 logoutButton.action = () => {
-    const callback = (response) => {
+    const callback = response => {
         if (response.success) {
             location.reload();
         }
@@ -10,7 +10,7 @@ logoutButton.action = () => {
 }
 
 //получение информации о пользователе
-ApiConnector.current((response) => {
+ApiConnector.current(response => {
     if (response.success) {
         ProfileWidget.showProfile(response.data);
     }
@@ -19,7 +19,7 @@ ApiConnector.current((response) => {
 //получение текущих курсов валют
 const ratesBoard = new RatesBoard();
 const getRatesBoards = () => {
-    ApiConnector.getStocks((response) => {
+    ApiConnector.getStocks(response => {
         if (response.success) {
             ratesBoard.clearTable();
             ratesBoard.fillTable(response.data)
@@ -34,7 +34,7 @@ setInterval(() => {
 //пополнение денег
 const moneyManager = new MoneyManager();
 moneyManager.addMoneyCallback = function (data) {
-    const callback = (response) => {
+    const callback = response => {
         if (response.success) {
             ProfileWidget.showProfile(response.data);
             moneyManager.setMessage(response.true, `Успешно пополнено: ${data.amount} ${data.currency}`)
@@ -47,7 +47,7 @@ moneyManager.addMoneyCallback = function (data) {
 
 //конвертация валюты
 moneyManager.conversionMoneyCallback = function (data) {
-    const callback = (response) => {
+    const callback = response => {
         if (response.success) {
             ProfileWidget.showProfile(response.data);
             moneyManager.setMessage(response.true, `Вы успешно конвертировали ${data.fromAmount} ${data.fromCurrency} в ${data.targetCurrency}`)
@@ -60,7 +60,7 @@ moneyManager.conversionMoneyCallback = function (data) {
 
 //перевод валюты
 moneyManager.sendMoneyCallback = function (data) {
-    const callback = (response) => {
+    const callback = response => {
         if (response.success) {
             ProfileWidget.showProfile(response.data);
             moneyManager.setMessage(response.true, `Вы успешно перевели ${data.amount} ${data.currency}`)
@@ -74,7 +74,7 @@ moneyManager.sendMoneyCallback = function (data) {
 //работа с избранным
 const favoritesWidget = new FavoritesWidget();
 
-ApiConnector.getFavorites((response) => {
+ApiConnector.getFavorites(response => {
     if (response.success) {
         favoritesWidget.clearTable();
         favoritesWidget.fillTable(response.data);
@@ -84,7 +84,7 @@ ApiConnector.getFavorites((response) => {
 
 //добавить пользователя в избранное
 favoritesWidget.addUserCallback = function (data) {
-    const callback = (response) => {
+    const callback = response => {
         if (response.success) {
             favoritesWidget.setMessage(response.true, `Пользователь ${data.name} успешно добавлен в избранное`)
             favoritesWidget.clearTable();
@@ -99,7 +99,7 @@ favoritesWidget.addUserCallback = function (data) {
 
 //удалить пользователя из избранного
 favoritesWidget.removeUserCallback = function (id) {
-    const callback = (response) => {
+    const callback = response => {
         if (response.success) {
             favoritesWidget.setMessage(response.true, `Пользователь успешно удален`)
             favoritesWidget.clearTable();
