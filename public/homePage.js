@@ -35,11 +35,12 @@ setInterval(() => {
 const moneyManager = new MoneyManager();
 moneyManager.addMoneyCallback = function (data) {
     const callback = response => {
+        console.log(response);
         if (response.success) {
             ProfileWidget.showProfile(response.data);
-            moneyManager.setMessage(response.true, `Успешно пополнено: ${data.amount} ${data.currency}`)
+            moneyManager.setMessage(response.success, `Успешно пополнено: ${data.amount} ${data.currency}`)
         } else {
-            moneyManager.setMessage(response.false, 'Ошибка пополнения');
+            moneyManager.setMessage(response.false, response.error);
         }
     }
     ApiConnector.addMoney({ currency: data.currency, amount: data.amount }, callback)
@@ -50,7 +51,7 @@ moneyManager.conversionMoneyCallback = function (data) {
     const callback = response => {
         if (response.success) {
             ProfileWidget.showProfile(response.data);
-            moneyManager.setMessage(response.true, `Вы успешно конвертировали ${data.fromAmount} ${data.fromCurrency} в ${data.targetCurrency}`)
+            moneyManager.setMessage(response.success, `Вы успешно конвертировали ${data.fromAmount} ${data.fromCurrency} в ${data.targetCurrency}`)
         } else {
             moneyManager.setMessage(response.false, response.error)
         }
@@ -63,7 +64,7 @@ moneyManager.sendMoneyCallback = function (data) {
     const callback = response => {
         if (response.success) {
             ProfileWidget.showProfile(response.data);
-            moneyManager.setMessage(response.true, `Вы успешно перевели ${data.amount} ${data.currency}`)
+            moneyManager.setMessage(response.success, `Вы успешно перевели ${data.amount} ${data.currency}`)
         } else {
             moneyManager.setMessage(response.false, response.error);
         }
@@ -86,7 +87,7 @@ ApiConnector.getFavorites(response => {
 favoritesWidget.addUserCallback = function (data) {
     const callback = response => {
         if (response.success) {
-            favoritesWidget.setMessage(response.true, `Пользователь ${data.name} успешно добавлен в избранное`)
+            favoritesWidget.setMessage(response.success, `Пользователь ${data.name} успешно добавлен в избранное`)
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(response.data);
             moneyManager.updateUsersList(response.data);
@@ -101,7 +102,7 @@ favoritesWidget.addUserCallback = function (data) {
 favoritesWidget.removeUserCallback = function (id) {
     const callback = response => {
         if (response.success) {
-            favoritesWidget.setMessage(response.true, `Пользователь успешно удален`)
+            favoritesWidget.setMessage(response.success, `Пользователь успешно удален`)
             favoritesWidget.clearTable();
             favoritesWidget.fillTable(response.data);
             moneyManager.updateUsersList(response.data);
